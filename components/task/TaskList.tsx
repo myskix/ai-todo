@@ -3,12 +3,21 @@ import { TaskCard } from "./TaskCard";
 
 interface TaskListProps {
   tasks: Task[];
+  isLoading?: boolean;
   onToggle?: (id: string) => void;
   onEdit?: (task: Task) => void;
   onDelete?: (id: string) => void;
 }
 
-export function TaskList({ tasks, onToggle, onEdit, onDelete }: TaskListProps) {
+export function TaskList({ tasks, isLoading, onToggle, onEdit, onDelete }: TaskListProps) {
+  if (isLoading) {
+    return (
+      <div className="flex justify-center py-10">
+        <div className="w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
   if (tasks.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center px-4">

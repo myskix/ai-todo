@@ -25,7 +25,7 @@ export function useSync() {
 
     if (sbError) throw new Error(sbError.message);
 
-    return (data ?? []).map((row: Record<string, unknown>): Task => ({
+    return (data ?? []).map((row: any): Task => ({
       id: row.id,
       user_id: row.user_id,
       title: row.title,

@@ -134,10 +134,10 @@ export function AIPromptBox() {
                     <p className="text-xs text-muted truncate mt-0.5">{task.description}</p>
                   )}
                   <div className="flex gap-2 mt-2">
-                    <Badge variant={task.suggestedCategory as Category}>
+                    <Badge variant="category" type={task.suggestedCategory}>
                       {task.suggestedCategory}
                     </Badge>
-                    <Badge variant={task.suggestedPriority as Priority}>
+                    <Badge variant="priority" type={task.suggestedPriority}>
                       {task.suggestedPriority}
                     </Badge>
                   </div>

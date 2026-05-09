@@ -1,7 +1,25 @@
 "use client";
 
+import { useAuth } from "@/hooks/useAuth";
+import { Button } from "@/components/ui/Button";
 import Image from "next/image";
-...
+
+export function Navbar() {
+  const { user, signOut } = useAuth();
+
+  return (
+    <header className="flex items-center justify-between px-6 py-3 bg-card border-b border-border">
+      <div className="flex items-center gap-3">
+        {/* Mobile logo */}
+        <span className="md:hidden text-base font-bold text-foreground">
+          ✦ <span className="text-accent">AI</span> Todo
+        </span>
+      </div>
+
+      <div className="flex items-center gap-3">
+        {user && (
+          <>
+            <div className="flex items-center gap-2">
               {user.avatar ? (
                 <Image
                   src={user.avatar}
