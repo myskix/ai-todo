@@ -42,8 +42,9 @@ The JSON must be an object with these exact fields:
       priority: parsedResult.priority || "medium",
       reason: parsedResult.reason || "Determined based on task details.",
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("AI Priority Error:", error);
-    return NextResponse.json({ error: error.message || "Failed to generate priority" }, { status: 500 });
+    const message = error instanceof Error ? error.message : "Failed to analyze priority";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

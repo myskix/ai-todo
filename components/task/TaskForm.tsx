@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { Task, Priority, Category } from "@/types";
 import { Button } from "@/components/ui/Button";
 

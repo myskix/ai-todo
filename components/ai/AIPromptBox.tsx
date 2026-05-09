@@ -5,7 +5,7 @@ import { useAI } from "@/hooks/useAI";
 import { useTasks } from "@/hooks/useTasks";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import type { Task } from "@/types";
+import type { Task, Priority, Category } from "@/types";
 
 interface SuggestedTask {
   title: string;
@@ -28,7 +28,7 @@ export function AIPromptBox() {
     const results = await generateTasks(prompt);
     if (results && results.length > 0) {
       setSuggestions(
-        results.map((r: any) => ({
+        results.map((r: { title: string; description?: string; suggestedCategory?: string; suggestedPriority?: string }) => ({
           title: r.title,
           description: r.description,
           suggestedCategory: r.suggestedCategory || "other",
@@ -53,8 +53,8 @@ export function AIPromptBox() {
         id: crypto.randomUUID(),
         title: st.title,
         description: st.description,
-        category: st.suggestedCategory as any,
-        priority: st.suggestedPriority as any,
+        category: st.suggestedCategory as Category,
+        priority: st.suggestedPriority as Priority,
         completed: false,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -134,10 +134,10 @@ export function AIPromptBox() {
                     <p className="text-xs text-muted truncate mt-0.5">{task.description}</p>
                   )}
                   <div className="flex gap-2 mt-2">
-                    <Badge variant={task.suggestedCategory as any}>
+                    <Badge variant={task.suggestedCategory as Category}>
                       {task.suggestedCategory}
                     </Badge>
-                    <Badge variant={task.suggestedPriority as any}>
+                    <Badge variant={task.suggestedPriority as Priority}>
                       {task.suggestedPriority}
                     </Badge>
                   </div>

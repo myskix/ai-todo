@@ -35,7 +35,7 @@ export default function DashboardPage() {
     setIsModalOpen(false);
   };
 
-  const handleSubmitTask = async (data: any) => {
+  const handleSubmitTask = async (data: Omit<Task, "id" | "createdAt" | "updatedAt" | "completed">) => {
     if (taskToEdit) {
       await updateTask(taskToEdit.id, data);
     } else {

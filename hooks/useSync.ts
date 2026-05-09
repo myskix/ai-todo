@@ -25,7 +25,7 @@ export function useSync() {
 
     if (sbError) throw new Error(sbError.message);
 
-    return (data ?? []).map((row: any): Task => ({
+    return (data ?? []).map((row: Record<string, unknown>): Task => ({
       id: row.id,
       user_id: row.user_id,
       title: row.title,
@@ -86,8 +86,8 @@ export function useSync() {
       setTasks(merged);
       saveTasksLocally(merged);
       setLastSynced(new Date());
-    } catch (err: any) {
-      setError(err.message ?? "Sync failed");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Sync failed");
     } finally {
       setIsSyncing(false);
     }

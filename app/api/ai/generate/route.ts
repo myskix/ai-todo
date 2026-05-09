@@ -39,8 +39,9 @@ The JSON must be an object with a "tasks" array containing objects with these ex
     }
 
     return NextResponse.json({ tasks: parsedResult.tasks || [] });
-  } catch (error: any) {
+  } catch (error) {
     console.error("AI Generation Error:", error);
-    return NextResponse.json({ error: error.message || "Failed to generate tasks" }, { status: 500 });
+    const message = error instanceof Error ? error.message : "Failed to generate tasks";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

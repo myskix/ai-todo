@@ -40,8 +40,9 @@ The JSON must be an object with one field:
     return NextResponse.json({
       suggestion: parsedResult.suggestion || "Work on this when you have focus time.",
     });
-  } catch (error: any) {
-    console.error("AI Time Suggestion Error:", error);
-    return NextResponse.json({ error: error.message || "Failed to generate suggestion" }, { status: 500 });
+  } catch (error) {
+    console.error("AI Suggest Time Error:", error);
+    const message = error instanceof Error ? error.message : "Failed to suggest time";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

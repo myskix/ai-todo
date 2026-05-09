@@ -17,7 +17,6 @@ import {
   parseISO,
 } from "date-fns";
 import { useTaskStore } from "@/store/taskStore";
-import { Task } from "@/types";
 
 export function CalendarView() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -51,11 +50,6 @@ export function CalendarView() {
         if (!t.deadline) return false;
         return isSameDay(parseISO(t.deadline), cloneDay);
       });
-
-      const hasTasks = dayTasks.length > 0;
-      const hasOverdue = dayTasks.some(
-        (t) => !t.completed && isBefore(startOfDay(parseISO(t.deadline!)), today)
-      );
 
       const isCurrentMonth = isSameMonth(day, monthStart);
       const isSelected = selectedDate && isSameDay(day, selectedDate);

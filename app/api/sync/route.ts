@@ -19,7 +19,8 @@ export async function POST(req: NextRequest) {
     if (error) throw error;
 
     return NextResponse.json({ tasks: tasks ?? [] });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Sync failed";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
