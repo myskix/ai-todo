@@ -33,7 +33,7 @@ The JSON must be an object with these exact fields:
     let parsedResult;
     try {
       parsedResult = JSON.parse(jsonStr);
-    } catch (parseError) {
+    } catch {
       console.error("Failed to parse Gemini priority output:", text);
       throw new Error("Failed to parse generated priority as JSON");
     }

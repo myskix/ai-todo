@@ -32,7 +32,7 @@ The JSON must be an object with one field:
     let parsedResult;
     try {
       parsedResult = JSON.parse(jsonStr);
-    } catch (parseError) {
+    } catch {
       console.error("Failed to parse Gemini time output:", text);
       throw new Error("Failed to parse generated suggestion as JSON");
     }

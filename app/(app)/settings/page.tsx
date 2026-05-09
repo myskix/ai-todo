@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@/hooks/useAuth";
+import Image from "next/image";
 
 export default function SettingsPage() {
   const { user, isAuthenticated, logout } = useAuth();
@@ -18,7 +19,7 @@ export default function SettingsPage() {
           <div className="space-y-4">
             <div className="flex items-center gap-4">
               {user.avatar ? (
-                <img src={user.avatar} alt="Avatar" className="w-16 h-16 rounded-full border border-border object-cover" />
+                <Image src={user.avatar} alt="Avatar" width={64} height={64} className="w-16 h-16 rounded-full border border-border object-cover" />
               ) : (
                 <div className="w-16 h-16 rounded-full bg-border flex items-center justify-center text-2xl font-bold text-muted">
                   {user.name ? user.name.charAt(0).toUpperCase() : "U"}

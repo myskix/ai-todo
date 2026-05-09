@@ -2,6 +2,7 @@
 
 import { type ReactNode, useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { AuthGuard } from "@/components/layout/AuthGuard";
@@ -95,7 +96,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
         <div className="p-4 border-t border-border">
           <div className="flex items-center gap-3 px-2 py-2">
             {isAuthenticated && user?.avatar ? (
-              <img src={user.avatar} alt="Avatar" className="w-9 h-9 rounded-full object-cover border border-border" />
+              <Image src={user.avatar} alt="Avatar" width={36} height={36} className="w-9 h-9 rounded-full object-cover border border-border" />
             ) : (
               <div className="w-9 h-9 rounded-full bg-border flex items-center justify-center text-sm font-bold text-muted">
                 {isAuthenticated && user ? (user.name || user.email || "?").charAt(0).toUpperCase() : "G"}

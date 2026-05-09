@@ -62,7 +62,6 @@ function Spinner() {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function LoginPage() {
   const { loginWithGoogle, loginWithEmail } = useAuth();
-  const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [emailSent, setEmailSent] = useState(false);

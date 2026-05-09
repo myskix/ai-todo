@@ -33,7 +33,7 @@ The JSON must be an object with a "tasks" array containing objects with these ex
     let parsedResult;
     try {
       parsedResult = JSON.parse(jsonStr);
-    } catch (parseError) {
+    } catch {
       console.error("Failed to parse Gemini output:", text);
       throw new Error("Failed to parse generated tasks as JSON");
     }
