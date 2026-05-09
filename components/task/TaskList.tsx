@@ -1,4 +1,5 @@
 import type { Task } from "@/types";
+import { AnimatePresence } from "framer-motion";
 import { TaskCard } from "./TaskCard";
 
 interface TaskListProps {
@@ -36,15 +37,17 @@ export function TaskList({ tasks, isLoading, onToggle, onEdit, onDelete }: TaskL
 
   return (
     <div className="space-y-3">
-      {tasks.map((task) => (
-        <TaskCard
-          key={task.id}
-          task={task}
-          onToggle={onToggle}
-          onEdit={onEdit}
-          onDelete={onDelete}
-        />
-      ))}
+      <AnimatePresence mode="popLayout">
+        {tasks.map((task) => (
+          <TaskCard
+            key={task.id}
+            task={task}
+            onToggle={onToggle}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
+        ))}
+      </AnimatePresence>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { type Task } from "@/types";
 import { Badge } from "@/components/ui/Badge";
 import { AISuggestionChip } from "@/components/ai/AISuggestionChip";
@@ -12,7 +13,11 @@ interface TaskCardProps {
 
 export function TaskCard({ task, onToggle, onEdit, onDelete }: TaskCardProps) {
   return (
-    <div
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
       className={`group relative flex items-start gap-4 p-4 rounded-xl border transition-all duration-200 ${
         task.completed
           ? "bg-card/50 border-border/50 opacity-60"
@@ -105,6 +110,6 @@ export function TaskCard({ task, onToggle, onEdit, onDelete }: TaskCardProps) {
           </svg>
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 }

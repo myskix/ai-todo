@@ -20,16 +20,28 @@ export function TaskForm({ initialData, onSubmit, onCancel, isLoading }: TaskFor
   const [deadline, setDeadline] = useState(
     initialData?.deadline ? initialData.deadline.split("T")[0] : ""
   );
+  const [deadlineTime, setDeadlineTime] = useState(
+    initialData?.deadline && initialData.deadline.includes("T")
+      ? initialData.deadline.split("T")[1].slice(0, 5)
+      : ""
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim()) return;
+
+    let finalDeadline: string | undefined = undefined;
+    if (deadline) {
+      const timeStr = deadlineTime || "00:00";
+      finalDeadline = new Date(`${deadline}T${timeStr}`).toISOString();
+    }
+
     onSubmit({
       title: title.trim(),
       description: description.trim() || undefined,
       priority,
       category,
-      deadline: deadline ? new Date(deadline).toISOString() : undefined,
+      deadline: finalDeadline,
     });
   };
 
@@ -102,17 +114,31 @@ export function TaskForm({ initialData, onSubmit, onCancel, isLoading }: TaskFor
         </div>
       </div>
 
-      <div>
-        <label htmlFor="deadline" className="block text-sm font-medium text-muted mb-1.5">
-          Deadline (optional)
-        </label>
-        <input
-          id="deadline"
-          type="date"
-          value={deadline}
-          onChange={(e) => setDeadline(e.target.value)}
-          className="w-full px-4 py-2 bg-background border border-border rounded-xl text-foreground focus:outline-none focus:border-accent/60 transition-colors [color-scheme:dark]"
-        />
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="deadline" className="block text-sm font-medium text-muted mb-1.5">
+            Deadline Date
+          </label>
+          <input
+            id="deadline"
+            type="date"
+            value={deadline}
+            onChange={(e) => setDeadline(e.target.value)}
+            className="w-full px-4 py-2 bg-background border border-border rounded-xl text-foreground focus:outline-none focus:border-accent/60 transition-colors [color-scheme:dark]"
+          />
+        </div>
+        <div>
+          <label htmlFor="deadlineTime" className="block text-sm font-medium text-muted mb-1.5">
+            Time
+          </label>
+          <input
+            id="deadlineTime"
+            type="time"
+            value={deadlineTime}
+            onChange={(e) => setDeadlineTime(e.target.value)}
+            className="w-full px-4 py-2 bg-background border border-border rounded-xl text-foreground focus:outline-none focus:border-accent/60 transition-colors [color-scheme:dark]"
+          />
+        </div>
       </div>
 
       <div className="flex items-center justify-end gap-3 pt-2">

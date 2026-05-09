@@ -5,6 +5,7 @@ import { useAI } from "@/hooks/useAI";
 import { useTasks } from "@/hooks/useTasks";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import { format, parseISO } from "date-fns";
 import type { Task, Priority, Category } from "@/types";
 
 interface SuggestedTask {
@@ -12,6 +13,7 @@ interface SuggestedTask {
   description?: string;
   suggestedCategory: string;
   suggestedPriority: string;
+  suggestedDeadline?: string;
   selected: boolean;
 }
 
@@ -28,11 +30,12 @@ export function AIPromptBox() {
     const results = await generateTasks(prompt);
     if (results && results.length > 0) {
       setSuggestions(
-        results.map((r: { title: string; description?: string; suggestedCategory?: string; suggestedPriority?: string }) => ({
+        results.map((r: { title: string; description?: string; suggestedCategory?: string; suggestedPriority?: string; suggestedDeadline?: string }) => ({
           title: r.title,
           description: r.description,
           suggestedCategory: r.suggestedCategory || "other",
           suggestedPriority: r.suggestedPriority || "medium",
+          suggestedDeadline: r.suggestedDeadline,
           selected: true,
         }))
       );
@@ -48,20 +51,21 @@ export function AIPromptBox() {
   const handleAddSelected = async () => {
     const selectedTasks = suggestions.filter((s) => s.selected);
 
-    selectedTasks.forEach(async (st) => {
+    for (const st of selectedTasks) {
       const newTask: Task = {
         id: crypto.randomUUID(),
         title: st.title,
         description: st.description,
         category: st.suggestedCategory as Category,
         priority: st.suggestedPriority as Priority,
+        deadline: st.suggestedDeadline,
         completed: false,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
 
       await addTask(newTask);
-    });
+    }
 
     setSuggestions([]);
     setPrompt("");
@@ -133,13 +137,21 @@ export function AIPromptBox() {
                   {task.description && (
                     <p className="text-xs text-muted truncate mt-0.5">{task.description}</p>
                   )}
-                  <div className="flex gap-2 mt-2">
+                  <div className="flex flex-wrap gap-2 mt-2">
                     <Badge variant="category" type={task.suggestedCategory}>
                       {task.suggestedCategory}
                     </Badge>
                     <Badge variant="priority" type={task.suggestedPriority}>
                       {task.suggestedPriority}
                     </Badge>
+                    {task.suggestedDeadline && (
+                      <span className="text-[10px] text-accent font-medium flex items-center gap-1">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
+                        </svg>
+                        {format(parseISO(task.suggestedDeadline), "d MMM, HH:mm")}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>

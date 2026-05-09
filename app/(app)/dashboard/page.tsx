@@ -58,6 +58,32 @@ export default function DashboardPage() {
         <p className="text-sm text-muted mt-1">Manage your tasks and schedule</p>
       </div>
 
+      {/* Stats Overview */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="bg-card border border-border p-4 rounded-2xl">
+          <p className="text-xs font-medium text-muted uppercase tracking-wider mb-1">Total Tasks</p>
+          <p className="text-2xl font-bold text-foreground">{filteredTasks.length + (isLoading ? 0 : 0)}</p>
+        </div>
+        <div className="bg-card border border-border p-4 rounded-2xl">
+          <p className="text-xs font-medium text-muted uppercase tracking-wider mb-1">Completed</p>
+          <div className="flex items-baseline gap-2">
+            <p className="text-2xl font-bold text-emerald-500">{filteredTasks.filter(t => t.completed).length}</p>
+            <p className="text-xs text-muted">Done</p>
+          </div>
+        </div>
+        <div className="bg-card border border-border p-4 rounded-2xl">
+          <p className="text-xs font-medium text-muted uppercase tracking-wider mb-1">Pending</p>
+          <div className="flex items-baseline gap-2">
+            <p className="text-2xl font-bold text-accent">{filteredTasks.filter(t => !t.completed).length}</p>
+            <p className="text-xs text-muted">To do</p>
+          </div>
+        </div>
+        <div className="bg-card border border-border p-4 rounded-2xl">
+          <p className="text-xs font-medium text-muted uppercase tracking-wider mb-1">High Priority</p>
+          <p className="text-2xl font-bold text-red-500">{filteredTasks.filter(t => !t.completed && t.priority === "high").length}</p>
+        </div>
+      </div>
+
       {/* AI Prompt Box Placeholder */}
       <AIPromptBox />
 

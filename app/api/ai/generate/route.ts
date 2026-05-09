@@ -16,15 +16,17 @@ export async function POST(req: NextRequest) {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
+    const now = new Date().toLocaleString("id-ID", { timeZone: "Asia/Jakarta" });
     const systemPrompt = `You are a productivity assistant. Extract actionable tasks from the user's free-form description.
 Return ONLY valid JSON, no markdown, no backticks, no explanations.
 The JSON must be an object with a "tasks" array containing objects with these exact fields:
 - title (string, max 80 chars, clear and actionable, IN INDONESIAN)
 - description (string, optional details from the text, IN INDONESIAN)
 - suggestedCategory ("work" | "personal" | "health" | "learning" | "other")
-- suggestedPriority ("high" | "medium" | "low")`;
+- suggestedPriority ("high" | "medium" | "low")
+- suggestedDeadline (ISO 8601 string, provide a logical deadline date and time based on the task description and current time, IN INDONESIAN timezone. If no time/date mentioned, suggest a reasonable one.)`;
 
-    const result = await model.generateContent(`${systemPrompt}\n\nUser description: ${description}`);
+    const result = await model.generateContent(`Current time in Jakarta: ${now}\n\nSystem: ${systemPrompt}\n\nUser description: ${description}`);
     const text = result.response.text().trim();
     
     // Clean up potential markdown code block formatting
