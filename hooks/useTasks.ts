@@ -49,6 +49,48 @@ export function useTasks() {
     updated_at: t.updatedAt,
   });
 
+  // ─── Sync Logic ────────────────────────────────────────────────────────────
+  
+  /**
+   * Fetch tasks from Supabase and sync with local store
+   */
+  const fetchTasks = useCallback(async () => {
+    if (!isAuthenticated) return;
+    
+    setLoading(true);
+    const { data, error: sbError } = await supabase
+      .from("tasks")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (sbError) {
+      setError(sbError.message);
+    } else if (data) {
+      const formattedTasks: Task[] = data.map((t: any) => ({
+        id: t.id,
+        user_id: t.user_id,
+        title: t.title,
+        description: t.description || undefined,
+        priority: t.priority,
+        category: t.category,
+        deadline: t.deadline || undefined,
+        timeSuggestion: t.time_suggestion || undefined,
+        completed: t.completed,
+        createdAt: t.created_at,
+        updatedAt: t.updated_at,
+      }));
+      setTasks(formattedTasks);
+    }
+    setLoading(false);
+  }, [isAuthenticated, supabase, setTasks, setLoading, setError]);
+
+  // Sync on mount or when auth state changes
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     fetchTasks();
+  //   }
+  // }, [isAuthenticated, fetchTasks]);
+
   // ─── CRUD Operations ───────────────────────────────────────────────────────
 
   /**
@@ -60,13 +102,17 @@ export function useTasks() {
       addTask(task); // localStorage via Zustand persist
 
       if (isAuthenticated) {
-        const { error: sbError } = await supabase.from("tasks").insert(taskToRow(task));
+        const { data: userData } = await supabase.auth.getUser();
+        const user_id = userData.user?.id;
+        
+        const taskWithUser = { ...task, user_id };
+        const { error: sbError } = await supabase.from("tasks").insert(taskToRow(taskWithUser as Task));
         if (sbError) setError(sbError.message);
       }
 
       return task;
     },
-    [isAuthenticated]
+    [isAuthenticated, supabase]
   );
 
   /**
@@ -94,7 +140,7 @@ export function useTasks() {
         if (sbError) setError(sbError.message);
       }
     },
-    [isAuthenticated]
+    [isAuthenticated, supabase]
   );
 
   /**
@@ -109,7 +155,7 @@ export function useTasks() {
         if (sbError) setError(sbError.message);
       }
     },
-    [isAuthenticated]
+    [isAuthenticated, supabase]
   );
 
   /**
@@ -131,7 +177,7 @@ export function useTasks() {
         if (sbError) setError(sbError.message);
       }
     },
-    [isAuthenticated, tasks]
+    [isAuthenticated, tasks, supabase]
   );
 
   return {
@@ -147,5 +193,6 @@ export function useTasks() {
     toggleComplete,
     setFilters,
     clearFilters,
+    fetchTasks,
   };
 }

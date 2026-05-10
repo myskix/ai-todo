@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuth } from "@/hooks/useAuth";
 import { useTasks } from "@/hooks/useTasks";
 import { TaskList } from "@/components/task/TaskList";
 import { TaskFilter } from "@/components/task/TaskFilter";
@@ -20,7 +21,17 @@ export default function DashboardPage() {
     updateTask,
     deleteTask,
     toggleComplete,
+    fetchTasks,
   } = useTasks();
+
+  const { isAuthenticated } = useAuth();
+
+  // Sync tasks when logged in
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchTasks();
+    }
+  }, [isAuthenticated, fetchTasks]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState<Task | undefined>(undefined);

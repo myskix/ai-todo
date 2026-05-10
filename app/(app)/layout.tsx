@@ -54,7 +54,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className="flex h-screen bg-background overflow-hidden text-foreground">
+    <div className="flex h-[100dvh] bg-background overflow-hidden text-foreground">
       {/* Desktop Sidebar */}
       <aside className="hidden md:flex flex-col w-64 bg-card border-r border-border">
         {/* Logo */}
@@ -72,7 +72,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
         </div>
 
         {/* Nav Links */}
-        <nav className="flex-1 px-4 py-2 space-y-1">
+        <nav className="flex-1 px-4 py-2 space-y-1 overflow-y-auto">
           {navItems.map((item) => {
             const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
             return (
@@ -130,10 +130,10 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex flex-col flex-1 overflow-hidden">
+      <div className="flex flex-col flex-1 min-w-0 overflow-hidden relative">
         <AuthGuard>
           {/* Mobile Header */}
-          <header className="md:hidden flex items-center justify-between px-5 py-4 border-b border-border bg-card">
+          <header className="md:hidden flex items-center justify-between px-5 py-4 border-b border-border bg-card/80 backdrop-blur-md sticky top-0 z-30">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-accent to-blue-600 flex items-center justify-center text-white shadow-md">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -153,14 +153,14 @@ export default function AppLayout({ children }: { children: ReactNode }) {
             <div className="bg-accent/10 border-b border-accent/20 px-4 py-2.5 flex items-center justify-between text-sm">
               <div className="flex items-center gap-2 text-foreground">
                 <span>💾</span>
-                <span>Tasks saved locally. Login to sync across devices.</span>
+                <span className="text-xs sm:text-sm">Tasks saved locally. Login to sync.</span>
               </div>
               <div className="flex items-center gap-3">
-                <Link href="/login" className="text-accent font-medium hover:underline whitespace-nowrap">
+                <Link href="/login" className="text-accent font-medium hover:underline whitespace-nowrap text-xs sm:text-sm">
                   Login
                 </Link>
                 <button onClick={handleDismissBanner} className="text-muted hover:text-foreground">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18" />
                     <line x1="6" y1="6" x2="18" y2="18" />
                   </svg>
@@ -170,14 +170,14 @@ export default function AppLayout({ children }: { children: ReactNode }) {
           )}
 
           {/* Page Content */}
-          <main className="flex-1 overflow-y-auto p-4 md:p-8 pb-24 md:pb-8">
-            <div className="max-w-4xl mx-auto h-full">
+          <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-8 pb-32 md:pb-8 scroll-smooth">
+            <div className="max-w-4xl mx-auto">
               {children}
             </div>
           </main>
 
           {/* Mobile Bottom Nav */}
-          <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t border-border z-40 pb-safe">
+          <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-card/90 backdrop-blur-lg border-t border-border z-40 pb-safe">
             <div className="flex items-center justify-around p-2">
               {navItems.map((item) => {
                 const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
