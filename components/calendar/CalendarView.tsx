@@ -107,7 +107,14 @@ export function CalendarView() {
 
   // Selected date tasks
   const selectedDateTasks = selectedDate
-    ? tasks.filter((t) => t.deadline && isSameDay(parseISO(t.deadline), selectedDate))
+    ? tasks
+        .filter((t) => t.deadline && isSameDay(parseISO(t.deadline), selectedDate))
+        .sort((a, b) => {
+          if (a.deadline && b.deadline) {
+            return new Date(a.deadline).getTime() - new Date(b.deadline).getTime();
+          }
+          return 0;
+        })
     : [];
 
   return (
@@ -202,15 +209,25 @@ export function CalendarView() {
                     <p className={`text-sm font-medium truncate ${task.completed ? "text-muted line-through" : "text-foreground"}`}>
                       {task.title}
                     </p>
-                    {task.priority && (
-                      <span className={`inline-block mt-1 text-[10px] px-1.5 py-0.5 rounded font-medium ${
-                        task.priority === "high" ? "bg-red-500/10 text-red-500" :
-                        task.priority === "medium" ? "bg-yellow-500/10 text-yellow-500" :
-                        "bg-blue-500/10 text-blue-500"
-                      }`}>
-                        {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
-                      </span>
-                    )}
+                    <div className="flex items-center gap-2 mt-1">
+                      {task.deadline && (
+                        <span className="flex items-center gap-1 text-[10px] text-muted font-medium bg-muted/20 px-1.5 py-0.5 rounded">
+                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                          </svg>
+                          {format(parseISO(task.deadline), "HH:mm")}
+                        </span>
+                      )}
+                      {task.priority && (
+                        <span className={`inline-block text-[10px] px-1.5 py-0.5 rounded font-medium ${
+                          task.priority === "high" ? "bg-red-500/10 text-red-500" :
+                          task.priority === "medium" ? "bg-yellow-500/10 text-yellow-500" :
+                          "bg-blue-500/10 text-blue-500"
+                        }`}>
+                          {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))

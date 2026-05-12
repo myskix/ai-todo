@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import { useTaskStore } from "@/store/taskStore";
 import { useAuthStore } from "@/store/authStore";
 import { createClient } from "@/lib/supabase/client";
-import { mergeLocalWithCloud, loadLocalTasks, saveTasksLocally } from "@/lib/utils/sync";
+import { mergeLocalWithCloud, loadLocalTasks } from "@/lib/utils/sync";
 import { Task } from "@/types";
 
 export function useSync() {
@@ -82,9 +82,8 @@ export function useSync() {
       // Push merged back to cloud (covers local-only tasks)
       await syncToCloud(merged);
 
-      // Persist merged state everywhere
+      // Persist merged state to Zustand (which then saves to localStorage)
       setTasks(merged);
-      saveTasksLocally(merged);
       setLastSynced(new Date());
     } catch (err) {
       setError(err instanceof Error ? err.message : "Sync failed");

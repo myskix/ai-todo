@@ -4,16 +4,20 @@ import { Task } from "@/types";
 
 const STORAGE_KEY = "kynda-do:tasks";
 
-export function saveTasksLocally(tasks: Task[]): void {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
-}
-
 export function loadLocalTasks(): Task[] {
   if (typeof window === "undefined") return [];
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as Task[]) : [];
+    if (!raw) return [];
+    
+    const parsed = JSON.parse(raw);
+    // Zustand persist stores data in a { state: { ... } } wrapper
+    if (parsed && parsed.state && Array.isArray(parsed.state.tasks)) {
+      return parsed.state.tasks;
+    }
+    
+    // Fallback if it's stored as a direct array (legacy or other)
+    return Array.isArray(parsed) ? parsed : [];
   } catch {
     return [];
   }

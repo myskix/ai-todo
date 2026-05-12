@@ -75,19 +75,34 @@ export const useTaskStore = create<TaskState>()(
 
       getFilteredTasks: () => {
         const { tasks, filters } = get();
-        return tasks.filter((task) => {
-          if (filters.priority && task.priority !== filters.priority) return false;
-          if (filters.category && task.category !== filters.category) return false;
-          if (filters.completed !== undefined && task.completed !== filters.completed)
-            return false;
-          if (
-            filters.search &&
-            !task.title.toLowerCase().includes(filters.search.toLowerCase()) &&
-            !task.description?.toLowerCase().includes(filters.search.toLowerCase())
-          )
-            return false;
-          return true;
-        });
+        return tasks
+          .filter((task) => {
+            if (filters.priority && task.priority !== filters.priority) return false;
+            if (filters.category && task.category !== filters.category) return false;
+            if (filters.completed !== undefined && task.completed !== filters.completed)
+              return false;
+            if (
+              filters.search &&
+              !task.title.toLowerCase().includes(filters.search.toLowerCase()) &&
+              !task.description?.toLowerCase().includes(filters.search.toLowerCase())
+            )
+              return false;
+            return true;
+          })
+          .sort((a, b) => {
+            // Sort by completion status first (optional, but usually helpful)
+            // if (a.completed !== b.completed) return a.completed ? 1 : -1;
+
+            // Sort by deadline
+            if (a.deadline && b.deadline) {
+              return new Date(a.deadline).getTime() - new Date(b.deadline).getTime();
+            }
+            if (a.deadline) return -1;
+            if (b.deadline) return 1;
+
+            // Fallback to creation date (newest first)
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          });
       },
     }),
     {

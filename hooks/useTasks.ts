@@ -84,12 +84,6 @@ export function useTasks() {
     setLoading(false);
   }, [isAuthenticated, supabase, setTasks, setLoading, setError]);
 
-  // Sync on mount or when auth state changes
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     fetchTasks();
-  //   }
-  // }, [isAuthenticated, fetchTasks]);
 
   // ─── CRUD Operations ───────────────────────────────────────────────────────
 
@@ -101,7 +95,7 @@ export function useTasks() {
     async (task: Task) => {
       addTask(task); // localStorage via Zustand persist
 
-      if (isAuthenticated) {
+      if (isAuthenticated && typeof window !== "undefined" && window.navigator.onLine) {
         const { data: userData } = await supabase.auth.getUser();
         const user_id = userData.user?.id;
         
@@ -122,7 +116,7 @@ export function useTasks() {
     async (id: string, updates: Partial<Task>) => {
       updateTask(id, updates); // optimistic local update
 
-      if (isAuthenticated) {
+      if (isAuthenticated && typeof window !== "undefined" && window.navigator.onLine) {
         const dbUpdates: Record<string, any> = {};
         if (updates.title !== undefined) dbUpdates.title = updates.title;
         if (updates.description !== undefined) dbUpdates.description = updates.description;
@@ -150,7 +144,7 @@ export function useTasks() {
     async (id: string) => {
       deleteTask(id); // optimistic local delete
 
-      if (isAuthenticated) {
+      if (isAuthenticated && typeof window !== "undefined" && window.navigator.onLine) {
         const { error: sbError } = await supabase.from("tasks").delete().eq("id", id);
         if (sbError) setError(sbError.message);
       }
@@ -169,7 +163,7 @@ export function useTasks() {
 
       storeToggleComplete(id); // optimistic local toggle
 
-      if (isAuthenticated) {
+      if (isAuthenticated && typeof window !== "undefined" && window.navigator.onLine) {
         const { error: sbError } = await supabase
           .from("tasks")
           .update({ completed: newCompleted, updated_at: new Date().toISOString() })
