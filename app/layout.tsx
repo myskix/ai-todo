@@ -18,13 +18,13 @@ export const viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "AI Todo",
+  title: "Kynda Do",
   description: "AI-powered Task Management",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "AI Todo",
+    title: "Kynda Do",
   },
 };
 

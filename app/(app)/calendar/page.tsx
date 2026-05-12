@@ -1,7 +1,7 @@
 import { CalendarView } from "@/components/calendar/CalendarView";
 
 export const metadata = {
-  title: "Calendar - AI Todo",
+  title: "Calendar - Kynda Do",
 };
 
 export default function CalendarPage() {

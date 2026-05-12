@@ -2,7 +2,7 @@ import { Task } from "@/types";
 
 // ─── Local Storage Helpers ────────────────────────────────────────────────────
 
-const STORAGE_KEY = "ai-todo:tasks";
+const STORAGE_KEY = "kynda-do:tasks";
 
 export function saveTasksLocally(tasks: Task[]): void {
   if (typeof window === "undefined") return;

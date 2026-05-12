@@ -91,7 +91,7 @@ export const useTaskStore = create<TaskState>()(
       },
     }),
     {
-      name: "ai-todo:tasks",
+      name: "kynda-do:tasks",
       partialize: (state) => ({ tasks: state.tasks }),
     }
   )

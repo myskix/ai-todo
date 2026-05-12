@@ -1,4 +1,4 @@
-# AI Todo
+# Kynda Do
 
 A modern, AI-powered task management application built with Next.js, Supabase, and Tailwind CSS. Features an intuitive dark-themed UI, offline PWA support, and an AI assistant for smart task generation.
 
@@ -16,7 +16,7 @@ A modern, AI-powered task management application built with Next.js, Supabase, a
 
 ```bash
 git clone <repository-url>
-cd ai-todo
+cd kynda-do
 ```
 
 ### 2. Install dependencies
@@ -35,12 +35,12 @@ cp .env.example .env.local
 
 Fill in your `.env.local` file with the following variables:
 
-| Variable | Description |
-|----------|-------------|
-| `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY`| Your Supabase project public anon key |
-| `GEMINI_API_KEY` | Google Gemini API key for AI task generation |
-| `ANTHROPIC_API_KEY` | (Optional) Anthropic API key if using Claude |
+| Variable                        | Description                                  |
+| ------------------------------- | -------------------------------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`      | Your Supabase project URL                    |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase project public anon key        |
+| `GEMINI_API_KEY`                | Google Gemini API key for AI task generation |
+| `ANTHROPIC_API_KEY`             | (Optional) Anthropic API key if using Claude |
 
 ### 4. Supabase Setup
 

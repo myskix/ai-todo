@@ -64,7 +64,7 @@ export function Sidebar() {
 
       {/* Footer */}
       <div className="p-3 border-t border-border">
-        <p className="text-xs text-muted px-3">AI Todo v1.0</p>
+        <p className="text-xs text-muted px-3">Kynda Do v1.0</p>
       </div>
     </aside>
   );

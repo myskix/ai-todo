@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
@@ -168,39 +169,37 @@ export default function LoginPage() {
             style={{
               display: "inline-flex",
               alignItems: "center",
-              gap: "10px",
+              gap: "5px",
               marginBottom: "8px",
             }}
           >
             <div
               style={{
-                width: "36px",
-                height: "36px",
+                width: "48px",
+                height: "48px",
                 borderRadius: "10px",
-                background: "linear-gradient(135deg, #7c3aed, #4f46e5)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: "18px",
               }}
             >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
-                <path d="M5 3v4" />
-                <path d="M19 17v4" />
-                <path d="M3 5h4" />
-                <path d="M17 19h4" />
-            </svg>
+            <Image 
+              src="/logo.svg" 
+              alt="Kynda Do Logo" 
+              width={48} 
+              height={48} 
+              className="object-contain"
+            />
             </div>
             <span
               style={{
-                fontSize: "22px",
+                fontSize: "26px",
                 fontWeight: 700,
                 color: "#f5f5f5",
                 letterSpacing: "-0.5px",
               }}
             >
-              AI Todo
+              Kynda Do
             </span>
           </div>
         </div>
